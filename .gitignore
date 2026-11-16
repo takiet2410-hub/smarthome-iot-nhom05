@@ -1,0 +1,36 @@
+# Secrets
+.env
+.env.*
+!.env.example
+firmware/include/secrets.h
+
+# Node-RED / Node
+node-red/node_modules/
+node-red/flows_cred.json
+node-red/.config.*.json
+node-red/.sessions.json
+node-red/*.backup
+node-red/.flows.json.backup
+node_modules/
+npm-debug.log*
+
+# PlatformIO
+firmware/.pio/
+firmware/.vscode/.browse.c_cpp.db*
+firmware/.vscode/c_cpp_properties.json
+firmware/.vscode/launch.json
+firmware/.vscode/ipch
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+ai-service/*.joblib
+ai-service/data/raw/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

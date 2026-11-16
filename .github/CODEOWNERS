@@ -1,0 +1,23 @@
+# Phân quyền Code Owners trên GitHub cho Nhóm 05
+
+# Cấu hình chung và hạ tầng cốt lõi: Nhóm trưởng duyệt
+platformio.ini                   @kiet-tran
+firmware/include/config.h        @kiet-tran
+firmware/src/core/               @kiet-tran
+firmware/src/main.cpp            @kiet-tran
+docs/mqtt-topics.md              @kiet-tran
+docs/pin-map.md                  @kiet-tran
+.github/workflows/               @kiet-tran
+
+# Firmware modules theo thành viên phụ trách
+firmware/src/modules/kiet/       @kiet-tran
+firmware/wokwi/kiet/             @kiet-tran
+
+firmware/src/modules/quy/        @quy-tran
+firmware/wokwi/quy/              @quy-tran
+
+firmware/src/modules/phat/       @phat-nguyen
+firmware/wokwi/phat/             @phat-nguyen
+
+# AI Service: Trần Anh Kiệt phụ trách
+ai-service/                      @kiet-tran
