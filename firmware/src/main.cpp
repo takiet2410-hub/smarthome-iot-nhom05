@@ -64,69 +64,9 @@ void onMqttMessageReceived(char* topic, byte* payload, unsigned int length) {
 }
 
 void setup() {
-    Serial.begin(115200);
-    delay(1000);
 
-    Serial.println();
-    Serial.println("==================================================");
-    Serial.println(" SMART HOME IoT - NHOM 05 (PHYSICS FOR IT)");
-    Serial.print  (" Moi truong Firmware hien tai: ");
-    Serial.println(CURRENT_ENV);
-    Serial.println("==================================================");
-
-    // 1. Khoi tao ket noi mang WiFi va MQTT
-    wifiMqttSetup(onMqttMessageReceived);
-
-    // 2. Dang ky lang nghe topic ping tu Node-RED de kiem thu Hello World
-    mqttSubscribe(TOPIC_DEBUG_PING, 1);
-
-    // 3. Khoi tao cac module chuc nang theo build flag
-#ifdef BUILD_KIET
-    kietSetup();
-#endif
-#ifdef BUILD_QUY
-    quySetup();
-#endif
-#ifdef BUILD_PHAT
-    phatSetup();
-#endif
-
-    Serial.println("[SYSTEM] He thong da khoi dong xong va san sang hoat dong.");
 }
 
 void loop() {
-    // 1. Duy tri ket noi mang va xu ly background task MQTT
-    wifiMqttLoop();
 
-    // 2. Chay loop cua cac module chuc nang
-#ifdef BUILD_KIET
-    kietLoop();
-#endif
-#ifdef BUILD_QUY
-    quyLoop();
-#endif
-#ifdef BUILD_PHAT
-    phatLoop();
-#endif
-
-    // 3. Hello World: Dinh ky 5 giay publish JSON bao song len TOPIC_DEBUG_HELLO
-    unsigned long now = millis();
-    if (now - lastHelloPublish >= 5000) {
-        lastHelloPublish = now;
-
-        if (isMqttConnected()) {
-            JsonDocument doc;
-            doc["hello"] = CURRENT_ENV;
-            doc["uptime"] = now;
-
-            char jsonBuffer[128];
-            serializeJson(doc, jsonBuffer);
-
-            mqttPublish(TOPIC_DEBUG_HELLO, jsonBuffer);
-            Serial.print("[DEBUG OUT] Da publish toi ");
-            Serial.print(TOPIC_DEBUG_HELLO);
-            Serial.print(" -> ");
-            Serial.println(jsonBuffer);
-        }
-    }
 }
