@@ -596,18 +596,21 @@
         "className": "",
         "layout": "row-spread",
         "clickableArea": "switch",
-        "onvalue": "true",
-        "onvalueType": "bool",
+        "onvalue": "ON",
+        "onvalueType": "str",
         "onicon": "",
         "oncolor": "",
-        "offvalue": "false",
-        "offvalueType": "bool",
+        "offvalue": "OFF",
+        "offvalueType": "str",
         "officon": "",
         "offcolor": "",
-        "x": 770,
+        "x": 910,
         "y": 620,
         "wires": [
-            []
+            [
+                "79f73062e4dd1340",
+                "1c2ab73c17571909"
+            ]
         ]
     },
     {
@@ -642,8 +645,8 @@
         "className": "",
         "passthru": false,
         "dropdownOptions": [],
-        "x": 790,
-        "y": 660,
+        "x": 610,
+        "y": 680,
         "wires": [
             []
         ]
@@ -1370,7 +1373,7 @@
         "correl": "",
         "expiry": "",
         "broker": "7b0e5d739fb80d10",
-        "x": 1020,
+        "x": 1220,
         "y": 420,
         "wires": []
     },
@@ -1400,8 +1403,8 @@
         "offvalueType": "str",
         "officon": "",
         "offcolor": "",
-        "x": 750,
-        "y": 420,
+        "x": 910,
+        "y": 440,
         "wires": [
             [
                 "190db989749ca68c",
@@ -1421,8 +1424,42 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
+        "x": 1160,
         "y": 520,
+        "wires": []
+    },
+    {
+        "id": "79f73062e4dd1340",
+        "type": "mqtt out",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "",
+        "topic": "nhom05/smarthome/relay/cmd",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "7b0e5d739fb80d10",
+        "x": 1230,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "1c2ab73c17571909",
+        "type": "debug",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1180,
+        "y": 720,
         "wires": []
     }
 ]
