@@ -287,8 +287,8 @@
         "order": 2,
         "showTitle": true,
         "className": "",
-        "visible": "true",
-        "disabled": "false",
+        "visible": true,
+        "disabled": false,
         "groupType": "default",
         "keepLoaded": false,
         "tab": ""
@@ -422,6 +422,37 @@
         "tab": ""
     },
     {
+        "id": "7b0e5d739fb80d10",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt-dashboard.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
         "id": "9bc2e613ec877345",
         "type": "ui-text",
         "z": "fb7c89d7f2eeb81a",
@@ -541,67 +572,11 @@
         "color": "#717171",
         "wrapText": false,
         "className": "",
-        "value": "An toàn",
-        "valueType": "str",
-        "x": 560,
-        "y": 180,
+        "value": "payload",
+        "valueType": "msg",
+        "x": 1080,
+        "y": 340,
         "wires": []
-    },
-    {
-        "id": "51ea0eec029036bb",
-        "type": "ui-table",
-        "z": "fb7c89d7f2eeb81a",
-        "group": "94fa2691ef513ad7",
-        "name": "bang-log",
-        "label": "LOG",
-        "order": 1,
-        "width": "6",
-        "height": "6",
-        "maxrows": 0,
-        "passthru": false,
-        "autocols": true,
-        "showSearch": true,
-        "deselect": true,
-        "selectionType": "none",
-        "columns": [],
-        "mobileBreakpoint": "sm",
-        "mobileBreakpointType": "defaults",
-        "action": "append",
-        "className": "",
-        "x": 700,
-        "y": 260,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "a093aad8cf408b75",
-        "type": "inject",
-        "z": "fb7c89d7f2eeb81a",
-        "name": "dulieu-mock",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"Thời gian\":\"14:32:10\",\"Sự kiện\":\"Có chuyển động\"},{\"Thời gian\":\"13:05:41\",\"Sự kiện\":\"Có chuyển động\"}]",
-        "payloadType": "json",
-        "x": 550,
-        "y": 260,
-        "wires": [
-            [
-                "51ea0eec029036bb"
-            ]
-        ]
     },
     {
         "id": "aaa0275552e2f96b",
@@ -629,8 +604,8 @@
         "offvalueType": "bool",
         "officon": "",
         "offcolor": "",
-        "x": 890,
-        "y": 180,
+        "x": 770,
+        "y": 620,
         "wires": [
             []
         ]
@@ -667,8 +642,8 @@
         "className": "",
         "passthru": false,
         "dropdownOptions": [],
-        "x": 1110,
-        "y": 180,
+        "x": 790,
+        "y": 660,
         "wires": [
             []
         ]
@@ -1206,5 +1181,248 @@
                 "eaab58651d561a36"
             ]
         ]
+    },
+    {
+        "id": "af45b78d4e7759b7",
+        "type": "mqtt in",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "",
+        "topic": "nhom05/smarthome/pir/status",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "7b0e5d739fb80d10",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 600,
+        "y": 260,
+        "wires": [
+            [
+                "ea227d5e46595780",
+                "5b77e97a23b59eef",
+                "2cf01707f578e71e"
+            ]
+        ]
+    },
+    {
+        "id": "ea227d5e46595780",
+        "type": "function",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "function 1",
+        "func": "const message = String(msg.payload).trim();\nlet logs = context.get(\"logs\") || [];\nlet eventText = \"\";\n\nif (message === \"MOTION_DETECTED\") {\n    eventText = \"Có chuyển động\";\n} else if (message === \"CLEAR\") {\n    eventText = \"Không còn chuyển động.\";\n} else {\n    return null;\n}\n\nif (logs.length > 0 && logs[0][\"Sự kiện\"] === eventText) {\n    return null;\n}\n\nconst now = new Date();\nlogs.unshift({\n    \"Ngày\": now.toLocaleDateString(\"vi-VN\"),\n    \"Giờ\": now.toLocaleTimeString(\"vi-VN\"),\n    \"Sự kiện\": eventText\n});\n\nif (logs.length > 20) {\n    logs = logs.slice(0, 20);\n}\n\ncontext.set(\"logs\", logs);\nmsg.payload = logs;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 260,
+        "wires": [
+            [
+                "51ea0eec029036bb"
+            ]
+        ]
+    },
+    {
+        "id": "5b77e97a23b59eef",
+        "type": "debug",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "fd9b6b0848a839f0",
+        "type": "inject",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "x": 970,
+        "y": 60,
+        "wires": [
+            [
+                "51ea0eec029036bb"
+            ]
+        ]
+    },
+    {
+        "id": "51ea0eec029036bb",
+        "type": "ui-table",
+        "z": "fb7c89d7f2eeb81a",
+        "group": "94fa2691ef513ad7",
+        "name": "bang-log",
+        "label": "LOG",
+        "order": 1,
+        "width": "6",
+        "height": "6",
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 1080,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2cf01707f578e71e",
+        "type": "function",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "function 2",
+        "func": "const message = String(msg.payload).trim();\n\nif (message == 'MOTION_DETECTED') {\n    msg.payload = \"Nguy hiểm\"\n}\nelse if (message == 'CLEAR') {\n    msg.payload = \"An toàn\"\n}\nelse{return null;}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 340,
+        "wires": [
+            [
+                "7bed70b71dc7cda3"
+            ]
+        ]
+    },
+    {
+        "id": "6c2560f0d71a6217",
+        "type": "inject",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[]",
+        "payloadType": "json",
+        "x": 870,
+        "y": 140,
+        "wires": [
+            [
+                "7bed70b71dc7cda3"
+            ]
+        ]
+    },
+    {
+        "id": "190db989749ca68c",
+        "type": "mqtt out",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "",
+        "topic": "nhom05/smarthome/pir/cmd",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "7b0e5d739fb80d10",
+        "x": 1020,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "79a91b7c2d5995fe",
+        "type": "ui-switch",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "dk-PIR",
+        "label": "PIR",
+        "group": "f47ca29f1f744021",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "decouple": false,
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "className": "",
+        "layout": "row-spread",
+        "clickableArea": "switch",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "x": 750,
+        "y": 420,
+        "wires": [
+            [
+                "190db989749ca68c",
+                "a22f43d08a4f4341"
+            ]
+        ]
+    },
+    {
+        "id": "a22f43d08a4f4341",
+        "type": "debug",
+        "z": "fb7c89d7f2eeb81a",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 520,
+        "wires": []
     }
 ]
